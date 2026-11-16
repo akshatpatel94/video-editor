@@ -162,6 +162,7 @@ kbd {
   justify-content: center;
   background: #000;
   min-width: 0;
+  position: relative;
 }
 
 .video-element {
@@ -826,4 +827,86 @@ kbd {
   background: #10b981;
   border-color: #10b981;
   color: white;
+}
+
+/* ── Transition Settings ────────────────────────────────────────────────── */
+
+.transition-settings-bar {
+  padding: 8px 12px;
+  background: rgba(139, 92, 246, 0.08);
+  border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.transition-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.transition-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #c4b5fd;
+  white-space: nowrap;
+}
+
+.transition-select {
+  flex: 1;
+  padding: 3px 6px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  font-size: 11px;
+  border-radius: 4px;
+  cursor: pointer;
+  outline: none;
+}
+
+.transition-select:focus {
+  border-color: var(--purple);
+}
+
+.duration-select {
+  flex: none;
+  width: 90px;
+}
+
+.merge-modal-transitions {
+  padding: 8px 12px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.merged-preview-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background: rgba(16, 185, 129, 0.9);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+  z-index: 10;
+  letter-spacing: 0.3px;
+}
+
+.merged-preview-pulse {
+  color: #a7f3d0;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
 }

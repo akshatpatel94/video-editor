@@ -78,9 +78,18 @@ Choose whichever method fits your workflow:
 * **Trim the end**: Click **`Trim End ✂️`** (or press <kbd>W</kbd> / <kbd>]</kbd>).
 * **Keep only marked range**: Mark **`[ In`** and **`Out ]`**, then click **`⭐ Keep Selection`**.
 
-### Step 4: Managing, Previewing & Merging Segments
+### Step 4: Managing, Previewing & Adding Transitions
 * All cut segments appear in the **Segments** sidebar on the right.
-* **Preview Merged Video (`▶ Preview Merged Video`)**: Watch your edited video seamlessly in real time! ClippyCut will automatically skip over all cut-out portions so you can preview the merged transitions before exporting.
+* **Transitions**: To avoid jarring jump cuts between joined scenes, select a transition style from the **`✨ Transition`** menu in the Segments sidebar:
+  - **`✨ Crossfade (Dissolve)`**: Smooth cinematic blend between scenes.
+  - **`🎬 Dip to Black`**: Professional fade through black (ideal for scene or chapter changes).
+  - **`⚡ Flash White`**: High-energy flash transition.
+  - **`👉 Wipe Left / 👈 Wipe Right`**: Action directional wipe.
+  - **`⏩ Slide Left / ⏪ Slide Right`**: Smooth modern push slide.
+  - **`None (Direct Cut)`**: Instant jump cut with direct stream copy.
+  - **Duration Picker**: Choose between 0.3s, 0.5s, 1.0s, 1.5s, or 2.0s.
+  - Both video (`xfade`) and audio (`acrossfade`) are blended together to eliminate audio pops and visual jumps.
+* **Preview Merged Video (`▶ Preview Merged Video`)**: Watch your cut segments played in sequence with a live status badge showing your active transition!
 * Click **`▶`** on any individual segment card to preview only that clip.
 * Double-click a segment's name to rename it (e.g., "Part 1", "Boss Fight").
 * Use **`[ Start`** or **`End ]`** on a card to adjust a segment's boundary to the playhead.
@@ -88,15 +97,16 @@ Choose whichever method fits your workflow:
 
 ### Step 5: Exporting & Merging
 1. **Merge into 1 Continuous Video**:
-   - Click the prominent **`🔀 Merge & Export (1 Video)`** button in the top toolbar.
-   - All cut segments are directly stitched together into a single finished video file using FFmpeg concat stream copy (`-c copy`).
+   - Click **`🔀 Merge & Export`** in the top toolbar.
+   - When a transition is selected (e.g. Crossfade 1.0s), FFmpeg blends video and audio seamlessly with ultra-fast encoding.
+   - When set to `None`, it runs direct stream copy (`-c copy`) in 2–5 seconds at SSD write speed.
 2. **Export Separate Clips**:
    - Click **`📦 Export Separate Clips`** if you prefer each segment saved as its own numbered file (`video-001.mp4`, `video-002.mp4`).
 3. **Merge Multiple Different Video Files from Disk**:
    - Click **`🔀 Merge Files...`** in the top toolbar.
    - Select or drag & drop two or more video files.
-   - Reorder them with `▲` / `▼` buttons.
-   - Click **`⚡ Merge & Save Video`** to merge them in seconds with zero quality loss!
+   - Choose your preferred transition (e.g. Crossfade, Dip to Black, or None).
+   - Click **`⚡ Merge & Save Video`**!
 
 ---
 
