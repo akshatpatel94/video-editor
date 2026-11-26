@@ -25,6 +25,8 @@ export default function SegmentList(): React.ReactElement | null {
   const removeSegment = useEditorStore((s) => s.removeSegment)
   const updateSegment = useEditorStore((s) => s.updateSegment)
   const clearSegments = useEditorStore((s) => s.clearSegments)
+  const transitionConfig = useEditorStore((s) => s.transitionConfig)
+  const setTransitionConfig = useEditorStore((s) => s.setTransitionConfig)
   const filePath = useEditorStore((s) => s.filePath)
 
   const [editingId, setEditingId] = useState<string | null>(null)
@@ -184,17 +186,58 @@ export default function SegmentList(): React.ReactElement | null {
       </div>
 
       {segments.length > 1 && (
-        <div className="segment-merge-bar">
-          <label className="merge-toggle" style={{ margin: 0 }} title="All cut segments will be seamlessly merged into 1 file on export">
-            <input
-              type="checkbox"
-              checked={mergeSegments}
-              onChange={(e) => setMergeSegments(e.target.checked)}
-            />
-            <span style={{ color: '#86efac', fontWeight: 600 }}>🔀 Merge on Export: ON</span>
-          </label>
-          <span style={{ color: 'var(--text-muted)' }}>{segments.length} clips</span>
-        </div>
+        <>
+          <div className="segment-merge-bar">
+            <label className="merge-toggle" style={{ margin: 0 }} title="All cut segments will be seamlessly merged into 1 file on export">
+              <input
+                type="checkbox"
+                checked={mergeSegments}
+                onChange={(e) => setMergeSegments(e.target.checked)}
+              />
+              <span style={{ color: '#86efac', fontWeight: 600 }}>🔀 Merge on Export: ON</span>
+            </label>
+            <span style={{ color: 'var(--text-muted)' }}>{segments.length} clips</span>
+          </div>
+
+          <div className="transition-settings-bar">
+            <div className="transition-row">
+              <span className="transition-label">✨ Transition:</span>
+              <select
+                className="transition-select"
+                value={transitionConfig.type}
+                onChange={(e) => setTransitionConfig({ type: e.target.value as any })}
+                title="Select transition between merged segments"
+              >
+                <option value="none">None (Direct Cut)</option>
+                <option value="fade">✨ Crossfade (Dissolve)</option>
+                <option value="fadeblack">🎬 Dip to Black</option>
+                <option value="fadewhite">⚡ Flash White</option>
+                <option value="wipeleft">👉 Wipe Left</option>
+                <option value="wiperight">👈 Wipe Right</option>
+                <option value="slideleft">⏩ Slide Left</option>
+                <option value="slideright">⏪ Slide Right</option>
+              </select>
+            </div>
+
+            {transitionConfig.type !== 'none' && (
+              <div className="transition-row" style={{ marginTop: '5px' }}>
+                <span className="transition-label">⏱️ Duration:</span>
+                <select
+                  className="transition-select"
+                  value={transitionConfig.duration}
+                  onChange={(e) => setTransitionConfig({ duration: parseFloat(e.target.value) })}
+                  title="Transition duration in seconds"
+                >
+                  <option value="0.3">0.3s (Quick)</option>
+                  <option value="0.5">0.5s (Snappy)</option>
+                  <option value="1.0">1.0s (Normal)</option>
+                  <option value="1.5">1.5s (Cinematic)</option>
+                  <option value="2.0">2.0s (Slow)</option>
+                </select>
+              </div>
+            )}
+          </div>
+        </>
       )}
 
       {segments.length > 0 && (

@@ -14,6 +14,8 @@ export default function MergeFilesModal({
   const [files, setFiles] = useState<string[]>([])
   const [isMerging, setIsMerging] = useState(false)
   const [progress, setProgress] = useState(0)
+  const [transitionType, setTransitionType] = useState<string>('none')
+  const [transitionDuration, setTransitionDuration] = useState<number>(1.0)
 
   const handleAddFiles = useCallback(async () => {
     try {
@@ -89,7 +91,12 @@ export default function MergeFilesModal({
     })
 
     try {
-      const res = await window.electronAPI.mergeFiles(files, savePath)
+      const transitionConfig =
+        transitionType !== 'none'
+          ? { type: transitionType as any, duration: transitionDuration }
+          : undefined
+
+      const res = await window.electronAPI.mergeFiles(files, savePath, transitionConfig)
       if (res.success && res.file) {
         alert(`Success! Merged ${files.length} files into:\n${res.file}`)
         onMergeComplete?.(res.file)
@@ -181,6 +188,43 @@ export default function MergeFilesModal({
                 )
               })
             )}
+          </div>
+
+          <div className="merge-modal-transitions">
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)' }}>
+                ✨ Transition:
+              </span>
+              <select
+                className="transition-select"
+                value={transitionType}
+                onChange={(e) => setTransitionType(e.target.value)}
+                disabled={isMerging}
+              >
+                <option value="none">None (Direct Cut)</option>
+                <option value="fade">✨ Crossfade (Dissolve)</option>
+                <option value="fadeblack">🎬 Dip to Black</option>
+                <option value="fadewhite">⚡ Flash White</option>
+                <option value="wipeleft">👉 Wipe Left</option>
+                <option value="wiperight">👈 Wipe Right</option>
+                <option value="slideleft">⏩ Slide Left</option>
+                <option value="slideright">⏪ Slide Right</option>
+              </select>
+
+              {transitionType !== 'none' && (
+                <select
+                  className="transition-select duration-select"
+                  value={transitionDuration}
+                  onChange={(e) => setTransitionDuration(parseFloat(e.target.value))}
+                  disabled={isMerging}
+                >
+                  <option value="0.5">0.5s</option>
+                  <option value="1.0">1.0s</option>
+                  <option value="1.5">1.5s</option>
+                  <option value="2.0">2.0s</option>
+                </select>
+              )}
+            </div>
           </div>
 
           {isMerging && (

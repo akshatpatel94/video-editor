@@ -14,6 +14,7 @@ export default function Toolbar(): React.ReactElement {
   const exportProgress = useEditorStore((s) => s.exportProgress)
   const markIn = useEditorStore((s) => s.markIn)
   const markOut = useEditorStore((s) => s.markOut)
+  const transitionConfig = useEditorStore((s) => s.transitionConfig)
 
   const setFilePath = useEditorStore((s) => s.setFilePath)
   const setMediaInfo = useEditorStore((s) => s.setMediaInfo)
@@ -86,7 +87,8 @@ export default function Toolbar(): React.ReactElement {
         filePath,
         segmentsToExport,
         outputDir,
-        shouldMerge
+        shouldMerge,
+        shouldMerge ? transitionConfig : undefined
       )
       if (result.success) {
         alert(
@@ -138,11 +140,11 @@ export default function Toolbar(): React.ReactElement {
                 className="toolbar-btn export-btn"
                 onClick={() => handleExport(true)}
                 disabled={!filePath || !hasExportableContent || isExporting}
-                title="Stitch all cut segments into 1 continuous video file via direct stream copy"
+                title={`Stitch all cut segments into 1 continuous video file${transitionConfig.type !== 'none' ? ` with ${transitionConfig.type} transition (${transitionConfig.duration}s)` : ' via direct stream copy'}`}
               >
                 {isExporting
                   ? `⏳ Merging & Exporting ${Math.round(exportProgress)}%`
-                  : `🔀 Merge & Export (1 Video)`}
+                  : `🔀 Merge & Export (${transitionConfig.type !== 'none' ? `✨ ${transitionConfig.type === 'fade' ? 'Crossfade' : transitionConfig.type === 'fadeblack' ? 'Dip to Black' : transitionConfig.type}` : '1 Video'})`}
               </button>
 
               <button

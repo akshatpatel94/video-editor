@@ -16,6 +16,8 @@ export default function VideoPlayer(): React.ReactElement {
   const setCurrentTime = useEditorStore((s) => s.setCurrentTime)
   const setDuration = useEditorStore((s) => s.setDuration)
   const setIsPlaying = useEditorStore((s) => s.setIsPlaying)
+  const isPreviewingMerged = useEditorStore((s) => s.isPreviewingMerged)
+  const transitionConfig = useEditorStore((s) => s.transitionConfig)
 
   // Fetch local HTTP streaming URL whenever the file changes
   useEffect(() => {
@@ -76,16 +78,26 @@ export default function VideoPlayer(): React.ReactElement {
   return (
     <div className="video-player">
       {filePath && videoSrc ? (
-        <video
-          ref={(el) => {
-            videoRef.current = el
-            ;(window as any).__videoElement = el
-          }}
-          src={videoSrc}
-          className="video-element"
-          controls
-          playsInline
-        />
+        <>
+          <video
+            ref={(el) => {
+              videoRef.current = el
+              ;(window as any).__videoElement = el
+            }}
+            src={videoSrc}
+            className="video-element"
+            controls
+            playsInline
+          />
+          {isPreviewingMerged && (
+            <div className="merged-preview-badge">
+              <span className="merged-preview-pulse">●</span>
+              <span>
+                Merged Preview &bull; {transitionConfig.type !== 'none' ? `✨ ${transitionConfig.type.toUpperCase()} (${transitionConfig.duration}s)` : 'DIRECT CUT'}
+              </span>
+            </div>
+          )}
+        </>
       ) : (
         <div className="video-placeholder">
           <div className="placeholder-content">
